@@ -52,6 +52,19 @@ Green #00FF41. See `/app/design_guidelines.json`.
 - Mobile hamburger drawer; all filters wrap on mobile; footer contrast bumped
 - Test suite: `/app/backend/tests/backend_test.py` (19/19 pytest) + Playwright e2e via testing_agent
 
+### Phase 5 — Payment Processing Simulator (Feb 2026)
+- Route `/lab/payment-simulator`; card on `/labs`; command-palette entry `go-payment-sim`
+- Backend layered addition:
+  - `app/core/payment_models.py` — PaymentMethod / Scenario / PaymentStatus / PaymentStep / PaymentEventType / PaymentSimulation / PaymentSimulationEvent
+  - `app/application/payment_simulator.py` — `PaymentSimulatorService` with explicit `ALLOWED` transition matrix + background asyncio task
+  - `app/api/payment_routes.py` — `/api/payment-simulator/{scenarios, payments, payments/{id}, payments/{id}/process, payments/{id}/reset}`
+- Mongo collection `payment_simulations` with `created_at desc` index; embedded events array
+- All 5 scenarios implemented (Success/Failure/Timeout/MandateFailure/InsufficientFunds) with correct terminal states + retry flag + failure reason
+- Frontend components: 7-step Workflow visualizer with PENDING → PROCESSING → SUCCESS/FAILED/SKIPPED/WARNING states + aria-labels; Event Timeline; Result Card; clickable Architecture stack; "How this works" explainer with lifecycle + engineering-concepts cards
+- API Playground exposes 3 new payment-simulator endpoints
+- Tests: `payment_simulator_test.py` (16 cases) + `payment_simulator_extra_test.py` (25 cases) — 60/60 pytest via ingress
+- Testing agent iter 3: backend 60/60, frontend 17/18. Iter 4: 5/5 fixes verified.
+
 ## Backlog (in priority order)
 - **P0 · Phase 3** Payment Processing Simulator (mandate → validation → processing → retries → settlement, scenario switcher)
 - **P0 · Phase 4** Retry Engine Lab (exponential backoff + jitter, retry storm demo)

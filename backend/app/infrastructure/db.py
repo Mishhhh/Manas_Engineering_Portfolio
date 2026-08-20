@@ -21,3 +21,4 @@ class Collections:
     SKILLS = "portfolio_skills"
     PROFILE = "portfolio_profile"
     CONTACT = "portfolio_contact_messages"
+    PAYMENTS = "payment_simulations"

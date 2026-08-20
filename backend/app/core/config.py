@@ -16,7 +16,7 @@ class Settings:
     admin_email: str = os.environ.get("ADMIN_EMAIL", "")
     admin_password: str = os.environ.get("ADMIN_PASSWORD", "")
     emergent_llm_key: str = os.environ.get("EMERGENT_LLM_KEY", "")
-    app_version: str = "0.2.0"
+    app_version: str = "0.3.0"
     app_name: str = "manas-portfolio-api"
 
 

@@ -323,5 +323,6 @@ async def seed_if_needed() -> dict:
     await db[Collections.EXPERIENCE].create_index("order")
     await db[Collections.SKILLS].create_index("order")
     await db[Collections.CONTACT].create_index("created_at")
+    await db[Collections.PAYMENTS].create_index([("created_at", -1)])
 
     return counts

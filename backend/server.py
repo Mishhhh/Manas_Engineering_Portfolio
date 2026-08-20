@@ -49,6 +49,10 @@ def create_app() -> FastAPI:
 
     app.include_router(build_router(health_service))
 
+    # Feature module: Payment Simulator (Phase 5) — mounted under its own prefix.
+    from app.api.payment_routes import build_payment_router
+    app.include_router(build_payment_router())
+
     app.add_middleware(
         CORSMiddleware,
         allow_credentials=True,

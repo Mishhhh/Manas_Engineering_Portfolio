@@ -22,6 +22,20 @@ const ENDPOINTS = [
       message: "Loved the interactive portfolio — can we chat?",
     },
   },
+  { method: "GET", path: "/payment-simulator/scenarios", tag: "payment-simulator" },
+  { method: "GET", path: "/payment-simulator/payments", tag: "payment-simulator" },
+  {
+    method: "POST",
+    path: "/payment-simulator/payments",
+    tag: "payment-simulator",
+    body: {
+      customerId: "DEMO-1001",
+      amount: 120.0,
+      currency: "GBP",
+      paymentMethod: "DirectDebit",
+      scenario: "Success",
+    },
+  },
 ];
 
 const METHOD_COLOR = {

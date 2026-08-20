@@ -1,0 +1,41 @@
+{
+  "summary": "Phase 5 (Payment Processing Simulator) tested end-to-end through the public ingress URL. Backend: ran full pytest suite (existing 35 tests) plus a new 25-test supplementary suite covering scenario contract, create contract, event-history persistence across re-GETs, all 5 scenarios to terminal state, terminal-state guard on second /process, reset+reprocess, 404 shapes, 6 validation 422 cases, list limit, and Phase 1-4 regression smoke (health/profile/experience/skills/projects/project-detail/contact). Result: 60/60 passed. Frontend: Playwright verified /lab/payment-simulator rendering, prefilled defaults, Success/Failure/MandateFailure/InsufficientFunds/Timeout end-to-end runs with correct workflow-step data-state + aria-labels, result banner/failure reason/retry flag, event timeline counts, reset back to Created with 1 event, architecture toggle + node info, labs lab-card link, Cmd/Ctrl+K palette navigation, API Playground POST /payment-simulator/payments returning 201, all Phase 1-4 pages loading with zero console errors, contact form submit success, and mobile 390x844 stacking with no horizontal overflow. Only one deviation found (UI validation error not surfaced for amount=0 because native HTML5 min blocks submit).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/payment-simulator/payments/{id}/process", "issue": "Ack response reports status='Validated'/currentStep='Validation' without persisting; a GET immediately after can still return 'Created'. Cosmetic race — polling UI unaffected, but the ack is not a true reflection of persisted state."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "PaymentSimulator amount field", "issue": "Setting amount to 0 and clicking Process never surfaces data-testid='payment-error'. The input has min=0.01 + required, so native HTML5 constraint validation blocks form submission (browser tooltip 'Value must be greater than or equal to 0.01'); no in-app error element renders. Requested test case (validation-error surfacing via payment-error) fails. Suggest form noValidate + client-side check that sets err, or surface the backend 422 message.", "selector": "[data-testid=\"input-amount\"] / [data-testid=\"payment-error\"]", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Global header", "issues": ["Version chip still reads 'v0.2.0 · phase-2' while Phase 5 is shipped — stale build/version label"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/payment_simulator_extra_test.py",
+    "/app/backend/tests/payment_simulator_test.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results_iter3.xml"
+  ],
+  "action_items": [
+    "Surface in-app validation error for amount<=0 (data-testid='payment-error') instead of relying only on native HTML5 min validation, or update the acceptance criterion.",
+    "Optional: persist the transition (or return the real persisted status) in POST /process ack to avoid a misleading 'Validated' response.",
+    "Optional: update header version label from phase-2 to phase-5."
+  ],
+  "critical_code_review_comments": [
+    "PaymentSimulatorService._running dict never prunes completed tasks — unbounded growth over app lifetime; discard on task completion via add_done_callback.",
+    "Background asyncio task state is per-process; with >1 uvicorn worker a reset served by another worker cannot cancel the in-flight run. Acceptable for a demo, worth a code comment.",
+    "start_processing mutates sim status in memory purely for the response (comment admits it) — consider returning the persisted state to keep the API honest."
+  ],
+  "updated_files": ["/app/backend/tests/payment_simulator_extra_test.py"],
+  "success_rate": {"backend": "100% (60/60 pytest)", "frontend": "~95% (17/18 checks; only amount=0 error surfacing failed)"},
+  "seed_data_creation": "Created ~15 TEST_ payment simulations (PAY-DEMO-*) in payment_simulations collection plus 2 contact messages (qa.iter3@example.com / TEST QA Iter3) via regression smoke.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend suite = /app/backend/tests/{backend_test.py, payment_simulator_test.py, payment_simulator_extra_test.py}; all 60 pass via ingress in ~12s. Frontend testids: palette items are 'palette-item-go-payment-sim' (not 'go-payment-sim'); API playground uses 'api-execute' and 'api-response-body'. Allow ~4.5s per scenario for polling to reach terminal. Only open defect: payment-error not shown for amount=0 (native HTML5 validation intercepts).",
+  "rca_of_the_issue": "amount input is rendered with min='0.01' and required inside a <form> without noValidate, so Chrome's constraint validation aborts submit before the React handler posts to the API; therefore no backend 422 is received and the payment-error block (which only renders when err state is set) never appears."
+}

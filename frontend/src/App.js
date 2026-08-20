@@ -8,6 +8,7 @@ import SkillsPage from "@/pages/SkillsPage";
 import ResumePage from "@/pages/ResumePage";
 import ContactPage from "@/pages/ContactPage";
 import LabsPage from "@/pages/LabsPage";
+import PaymentSimulatorPage from "@/pages/PaymentSimulatorPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/resume" element={<ResumePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/labs" element={<LabsPage />} />
+          <Route path="/lab/payment-simulator" element={<PaymentSimulatorPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

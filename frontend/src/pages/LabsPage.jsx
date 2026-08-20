@@ -3,18 +3,61 @@ import Terminal from "@/components/portfolio/Terminal";
 import ArchitectureExplorer from "@/components/labs/ArchitectureExplorer";
 import ApiPlayground from "@/components/labs/ApiPlayground";
 import SystemStatus from "@/components/portfolio/SystemStatus";
+import { Link } from "react-router-dom";
+import { ArrowRight, Zap } from "lucide-react";
 
 export default function LabsPage() {
   return (
     <Layout>
       <div data-testid="labs-page">
         <LabsHero />
+        <LabHighlight />
         <SystemStatus />
         <Terminal />
         <ArchitectureExplorer />
         <ApiPlayground />
       </div>
     </Layout>
+  );
+}
+
+function LabHighlight() {
+  return (
+    <section
+      data-testid="lab-highlight"
+      className="border-b border-zinc-800 bg-[#070707]"
+    >
+      <div className="mx-auto max-w-[1440px] px-6 py-10">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Link
+            to="/lab/payment-simulator"
+            data-testid="lab-card-payment-simulator"
+            className="group flex items-start justify-between gap-4 border border-zinc-800 bg-[#0a0a0a] p-5 transition-colors duration-150 hover:border-[#00E5FF]"
+          >
+            <div>
+              <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[#00E5FF]">
+                <Zap size={11} /> new · phase-5
+              </div>
+              <h3 className="mt-2 text-lg font-semibold tracking-tight text-white">
+                Payment Processing Simulator
+              </h3>
+              <p className="mt-1 text-sm text-zinc-400">
+                Backend-owned state machine for validation → mandate check →
+                processing → settlement with 5 scenarios and full event history.
+              </p>
+            </div>
+            <ArrowRight
+              size={16}
+              className="mt-1 shrink-0 text-zinc-500 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-white"
+            />
+          </Link>
+
+          <div className="flex items-center border border-dashed border-zinc-800 bg-transparent p-5 font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+            more labs incoming · sql arena · ask manas · incident simulator
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

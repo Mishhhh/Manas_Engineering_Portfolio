@@ -1,0 +1,23 @@
+{
+  "summary": "Frontend-only retest (iteration 4) of the two iteration_3 fixes on /lab/payment-simulator plus header version chip regression. All 5 targeted scenarios PASSED: (1) amount=0 and amount=-5 surface payment-error 'amount must be greater than zero' (noValidate lets the React handler run, no native HTML5 popup blocking); (2) empty customerId shows 'customerId is required'; (3) currency='GB' shows 'currency must be a 3-letter ISO code'; (4) happy path with defaults (DEMO-1001 / 120 / GBP / DirectDebit / Success) reaches terminal SETTLED, result-banner shows SETTLED, full 7-step workflow SUCCESS, 8 events in timeline, no payment-error rendered; (5) top-bar version chip renders 'v0.3.0 \u2022 phase-5' and is visible at 1920px. No console errors observed. Backend suite not re-run per request.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor: version chip uses '\u2022' separator while the spec text mentioned '\u00b7'; cosmetic only, not a defect.",
+    "Minor: PaymentSimulator.jsx setField has a redundant ternary (e.target.type === 'number' ? e.target.value : e.target.value) - both branches identical; can be simplified.",
+    "Minor: app_version is duplicated in backend config and hardcoded in TopBar.jsx; consider sourcing the chip from GET /api/health to avoid future drift."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not re-run (60/60 in iteration_3)", "frontend": "100% (5/5 targeted tests)"},
+  "seed_data_creation": "One demo payment created via UI happy path (PAY-DEMO-* in payment simulator collection)",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Both iteration_3 issues (payment-simulator client-side validation and stale header version chip) are verified fixed. Full regression across all pages was intentionally skipped in this pass; iteration_3 covered 17/18 frontend scenarios.",
+  "rca_of_the_issue": "Previously native HTML5 constraints (min=0.01 + required) aborted submit before React's onSubmit ran, so no in-app error appeared. Adding noValidate to the form and explicit client-side validation in process() resolves it; verified in browser."
+}

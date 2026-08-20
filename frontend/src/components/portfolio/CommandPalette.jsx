@@ -21,6 +21,7 @@ export default function CommandPalette({ open, onClose }) {
       { id: "go-resume", label: "Open Résumé page", hint: "/resume", icon: FileText, run: () => nav("/resume") },
       { id: "go-contact", label: "Go to Contact", hint: "/contact", icon: Mail, run: () => nav("/contact") },
       { id: "go-labs", label: "Engineering Labs", hint: "/labs", icon: FlaskConical, run: () => nav("/labs") },
+      { id: "go-payment-sim", label: "Payment Simulator", hint: "/lab/payment-simulator", icon: FlaskConical, run: () => nav("/lab/payment-simulator") },
       { id: "download-resume", label: "Download Résumé (PDF)", hint: "external", icon: FileText, run: () => window.open(document.getElementById("__resume-url__")?.dataset.url || "#", "_blank") },
       { id: "terminal-help", label: "Terminal → help", hint: "shell", icon: Terminal, run: () => { nav("/labs"); setTimeout(() => window.dispatchEvent(new CustomEvent("terminal:run", { detail: "help" })), 60); } },
       { id: "terminal-projects", label: "Terminal → projects", hint: "shell", icon: Terminal, run: () => { nav("/labs"); setTimeout(() => window.dispatchEvent(new CustomEvent("terminal:run", { detail: "projects" })), 60); } },
