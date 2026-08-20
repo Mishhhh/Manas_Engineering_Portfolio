@@ -1,0 +1,101 @@
+{
+  "project_type": "Hybrid Fullstack Developer Platform",
+  "theme": "dark-first",
+  "typography": {
+    "primary_font": "IBM Plex Sans",
+    "monospace_font": "JetBrains Mono",
+    "fallback_fonts": ["ui-sans-serif", "system-ui", "sans-serif"],
+    "heading_strategy": "Use IBM Plex Sans. Never use Inter or Roboto. Apply tracking-tight (`letter-spacing: -0.025em`) to all headings above 24px. Keep weights bold (`font-bold`) but avoid overly massive sizes (`text-5xl` is the max for heroes).",
+    "body_strategy": "Use IBM Plex Sans `font-normal` with relaxed leading (`leading-relaxed`). Use cool-toned grays (e.g., text-zinc-400) for secondary text to maintain a clean dark aesthetic.",
+    "monospace_strategy": "CRITICAL: Use JetBrains Mono exclusively for the Interactive Terminal, SQL Arena, API responses, numerical data (metrics, stats, latency numbers), and system status indicators. It enforces tabular alignment and the 'engineer OS' feel."
+  },
+  "colors": {
+    "backgrounds": {
+      "base": "#050505",
+      "surface": "#0A0A0A",
+      "surface_elevated": "#121212",
+      "surface_highlight": "#1A1A1A"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "tertiary": "#52525B",
+      "terminal": "#00FF41"
+    },
+    "borders": {
+      "default": "#27272A",
+      "subtle": "#18181B",
+      "focus": "#007AFF"
+    },
+    "accents": {
+      "primary": "#007AFF",
+      "alert_yellow": "#FFBF00",
+      "error_red": "#FF3B30",
+      "success_green": "#00E5FF",
+      "terminal_green": "#00FF41"
+    },
+    "rules": "Never use generic AI purple gradients. Use cool-toned monochrome grays (Zinc/Slate) for structure. Accents (Volt Blue, Alert Yellow, Success Cyan) should be used purely functionally (e.g., system status, active tabs, error logs, active retries)."
+  },
+  "visual_enhancers": {
+    "textures": "Use subtle SVG noise overlays (opacity 2-5%) or CSS grid patterns to break up solid black backgrounds, simulating an engineering blueprint or terminal screen.",
+    "borders": "Expose the skeleton. Rely heavily on 1px solid borders (`border border-zinc-800`). Avoid soft shadows. Use 'Grid Borders' style where grid items share 1px borders.",
+    "shadows": "Replace soft drop shadows with 1px inner glows (`box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05)`) to create depth without 'fuzziness'.",
+    "glassmorphism": "FORBIDDEN. Use flat solid surfaces with sharp borders to maintain a clinical, reliable engineering aesthetic. Transparency is only allowed as a matte scrim (e.g., `bg-black/80`)."
+  },
+  "component_rules": {
+    "radii": "Use `rounded-none` or max `rounded-sm` (2px-4px) for all components. No large rounded corners. It must feel like a precision tool, not a consumer app.",
+    "buttons": "Rectangular, sharp, or very slightly rounded. Hover states should feature subtle background color shifts and border highlight changes. Example: `hover:bg-zinc-800 transition-colors`.",
+    "cards": "Cardless or 'Technical Grid' design. Group elements using 1px borders and padding rather than floating white/gray boxes.",
+    "inputs": "Flat dark backgrounds (`bg-zinc-900`), sharp 1px borders (`border-zinc-800`), ring on focus (`focus:ring-1 focus:ring-blue-500 focus:border-blue-500`).",
+    "status_indicators": "Small pulsing dots (using `animate-pulse` or a custom ping animation) next to labels like API, DATABASE, PAYMENT ENGINE. Green for operational, Yellow for degraded, Red for down."
+  },
+  "grids_and_layouts": {
+    "strategy": "Mode B: High Density Grid. Utilize CSS Grid extensively. The layout should look like a command center. Everything aligned to a strict grid system.",
+    "bento_grid": "For the project explorer and simulators, use an asymmetric, dense bento grid (e.g., `grid-cols-12`). Leave no unused pixels—utilize `h-full` to stretch widgets to match neighbors.",
+    "spacing": "Dense but structured. Use `gap-4` or `gap-6` for internal component spacing, but larger spacing (`py-24`) between major sections to isolate complex UI blocks."
+  },
+  "motion": {
+    "strategy": "Minimal, functional, lightning fast.",
+    "durations": "Transitions must be fast: `duration-100` or `duration-150` with `ease-out`. No slow, sweeping animations.",
+    "interactions": "Hover states should instantly highlight boundaries (e.g., border color shift to #52525B). Click states should subtly press in (`active:scale-[0.98]`).",
+    "terminal": "Simulate typing for terminal initial load (staggered character reveal) and use a constant fast-blinking block cursor (`animate-pulse` or keyframes) at the prompt."
+  },
+  "accessibility": {
+    "contrast": "Ensure APCA/WCAG AA compliance. Normal text must be minimum 4.5:1. Never use dark gray text on a black background.",
+    "focus": "All interactive elements MUST have a visible focus ring (`focus-visible:ring-1 focus-visible:ring-blue-500`).",
+    "data_testids": "CRITICAL: Every button, link, form input, menu, simulator control, and log output MUST have a descriptive, role-based `data-testid` (e.g., `data-testid=\"terminal-input\"`, `data-testid=\"retry-simulator-button\"`)."
+  },
+  "media": {
+    "strategy": "Avoid generic stock photography. Rely on the UI itself, typography, and functional visualizations (charts, code snippets, JSON logs) as the primary visual interest."
+  },
+  "image_urls": {
+    "texture_overlay": {
+      "url": "https://images.unsplash.com/photo-1568607184887-647b905c0966?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxkYXJrJTIwYWJzdHJhY3QlMjBncmlkJTIwdGV4dHVyZXxlbnwwfHx8fDE3ODcyMTU4MzF8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Subtle digital mesh/grid texture. Usage: Set as a background image with extremely low opacity (`opacity-5` to `opacity-[0.03]`) and `mix-blend-overlay` on the body or hero section to add a raw engineering texture."
+    },
+    "server_rack_abstract": {
+      "url": "https://images.unsplash.com/photo-1762163516269-3c143e04175c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwxfHxzZXJ2ZXIlMjByYWNrJTIwZGFya3xlbnwwfHx8fDE3ODcyMTU4MzB8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Server rack with blinking lights. Usage: Only if a placeholder thumbnail is strictly necessary for a legacy modernization or infrastructure project card. Use an aggressive dark overlay (`bg-black/70`) over it."
+    }
+  },
+  "3d_libraries": {
+    "recommendation": "DO NOT USE heavy 3D scenes (like R3F) per the instruction 'AVOID unnecessary 3D'.",
+    "alternative": "For visualizing payment flows or retries, use 2D canvas, pure DOM animations, or SVG-based node graphs (e.g., React Flow) to map out backend architecture and arrears timelines."
+  },
+  "instructions_to_main_agent": [
+    "Install and configure `lucide-react` or `@phosphor-icons/react` for technical, sharp icons.",
+    "Implement the Terminal using pure React state, maintaining an array of command history. Ensure keyboard support (up/down arrows for history).",
+    "Construct the System Status Panel as a sticky header or dense grid in the Hero, using small pulsating dots (green/yellow/red) beside labels like 'PAYMENTS', 'DB', 'APIs'.",
+    "For the Simulators (Payment, Retry, Arrears), build interactive visual state machines. Show JSON request/response payloads side-by-side with visual state changes.",
+    "Ensure the application strictly follows the dark-first engineering aesthetic: deep blacks, pure whites, and vivid functional accents. Do not mix in soft, consumer-app colors."
+  ],
+  "UNIVERSAL_GUIDELINES": [
+    "Do not converge toward generic 'AI slop' aesthetics. Avoid centered text layouts, large floating blobs, and purple/pink gradients.",
+    "Create depth through layered 1px borders and inner shadows, not soft drop shadows.",
+    "Apply precise, non-universal transitions (e.g., `transition-colors duration-150`, not `transition-all`).",
+    "Prioritize optical alignment and high information density. Ensure all sections are keyboard navigable.",
+    "NEVER use placeholders like dummyimage.com. Do not use AI emojis for icons.",
+    "Add `data-testid` to all interactive elements for robust testing.",
+    "When customizing Shadcn UI components (if used), strip away their soft radii (`rounded-md`) and shadows, replacing them with sharp borders (`rounded-none` or `rounded-sm`) to fit the dev-tool aesthetic."
+  ]
+}

@@ -1,0 +1,6 @@
+/* App.css — root wrapper only; component styles live with each component */
+.App {
+  min-height: 100vh;
+  background-color: #050505;
+  color: #ffffff;
+}
