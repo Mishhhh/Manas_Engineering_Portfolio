@@ -22,6 +22,7 @@ export default function About() {
     >
       <div className="mx-auto max-w-[1440px] px-6 py-14 lg:py-20">
         <SectionHeader eyebrow="0x00 · about" title="About" hint="grounded in résumé · not fabricated" />
+        <h1 className="sr-only">About Manas Mishra</h1>
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
           <div className="lg:col-span-8">

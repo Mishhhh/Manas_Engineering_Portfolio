@@ -1,0 +1,36 @@
+{
+  "summary": "Focused Phase 6/7/8 verification. Backend: 11 targeted curl-equivalent pytest checks (SQL Arena security guard, challenge submit, retry engine delays, arrears state machine) — 11/11 pass. Frontend: /lab/retry-engine, /lab/arrears, /lab/sql-arena fully exercised (schema explorer 6 tables, 12 challenges, submit CORRECT, run SQL 8 rows, 3 hints, solution panel, read-only security error, Easy filter, Interview mode hiding hint/solution + timer, mobile 390x844 no overflow), /labs 4 cards navigate, 9 regression routes 200 with zero console errors. One real frontend bug found: challenge starter SQL is invalid.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/arrears/simulate", "issue": "Spec in review request expected final_state='InArrears' for 3 x Fail with max_attempts=4, but implementation only enters InArrears when consecutive_failures >= max_attempts, so 3 fails/4 attempts returns 'Retrying'. Verified InArrears + arrears_amount=12.99 with max_attempts=3. Confirm which is the intended contract."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "SqlArenaPage openChallenge (line ~58)", "issue": "Starter SQL is built as '-- title\\n-- description\\nSELECT ...' then .replace(/-- /g,'') strips the comment markers, leaving the challenge title/description as bare SQL lines. Clicking Run right after opening any challenge fails with \"only read-only SELECT/WITH statements are allowed (got 'CUSTOMER')\". Reproduced on c02. Fix: don't inject the prose at all (comments are rejected by the arena guard) — set starter to just the SELECT template, or render the prompt outside the textarea.", "selector": "[data-testid=sql-editor]", "priority": "HIGH"},
+      {"component": "AboutPage/ExperiencePage/ProjectsPage/SkillsPage/ResumePage/ContactPage", "issue": "No <h1> element on these 6 routes (only Home, Labs and lab pages have one) — a11y/SEO heading hierarchy gap.", "selector": "h1", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/tests/lab_phase678_security_test.py", "/app/test_reports/pytest/phase678_security.xml"],
+  "action_items": [
+    "Fix SQL Arena challenge starter SQL so the prefilled query is runnable (remove prose injected into the textarea).",
+    "Clarify/align arrears InArrears threshold semantics (consecutive_failures >= max_attempts) with the intended spec.",
+    "Add <h1> to About/Experience/Projects/Skills/Resume/Contact pages.",
+    "Do NOT keep new pytest files under /app/backend/tests while iterating — uvicorn --reload watches that dir; my file write caused a reload storm that hung the backend for ~4 min (had to supervisorctl restart backend). Tests now live in /app/tests."
+  ],
+  "critical_code_review_comments": [
+    "sql_arena.validate_query: guard is solid (comment rejection, single-statement, SELECT/WITH allowlist, keyword blocklist, PRAGMA query_only, 200-row cap). One gap: `PRAGMA query_only = 1` is issued via db.execute after seeding but PRAGMA is also on the blocklist for user input — fine; however the blocklist would also reject legitimate column/alias names containing blocked words (e.g. an alias named `create_date` is safe due to \\b but `SELECT ... AS \"REPLACE\"` would 400). Low risk, worth a note.",
+    "SqlArenaPage line 58: `.replace(/-- /g, '')` on a comment string is a code smell that directly produces invalid SQL — remove.",
+    "lab_routes submit(): returns 200 with correct=false for invalid SQL which is reasonable, but the challenge-not-found path correctly 404s. Good."
+  ],
+  "updated_files": ["/app/tests/lab_phase678_security_test.py"],
+  "success_rate": {"backend": "100% (11/11 targeted checks)", "frontend": "92% (12/13 scenarios; SQL starter-query bug)"},
+  "seed_data_creation": "None — SQL Arena uses an in-memory seeded SQLite sandbox; no writes performed.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend security/engine regression tests live at /app/tests/lab_phase678_security_test.py — run with `cd /app/tests && python -m pytest lab_phase678_security_test.py -o addopts=''` (do not place new test files in /app/backend/tests: uvicorn reload watches it and can hang the backend). Field name for retry delays is delay_before_ms (not delay_ms). Arrears requires subscription_amount. All 3 new lab pages verified working via public URL; only outstanding frontend bug is the SqlArenaPage starter-SQL prose injection.",
+  "rca_of_the_issue": "SqlArenaPage.openChallenge composes a starter query using SQL line comments for the title/description, then strips the '-- ' prefixes (presumably because the backend guard rejects comments). The result is challenge prose as bare tokens before the SELECT, so validate_query sees the first token as a non-SELECT keyword and rejects the query. Any user clicking Run before editing sees a confusing error. Mitigation: set sql to the plain SELECT template only."
+}

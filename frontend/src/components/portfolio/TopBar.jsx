@@ -49,7 +49,7 @@ export default function TopBar({ onOpenPalette }) {
               manas.mishra / portfolio.os
             </span>
             <span className="font-mono text-[10px] tracking-[0.18em] text-zinc-600">
-              v0.3.0 • phase-5
+              v0.4.0 • phase-8
             </span>
           </div>
         </Link>

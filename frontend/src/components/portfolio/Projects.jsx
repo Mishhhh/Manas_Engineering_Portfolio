@@ -38,6 +38,7 @@ export default function Projects({ compact = false, onOpen }) {
           title="Project Explorer"
           hint={`${filtered.length} shown · problem → decisions → lessons`}
         />
+        <h1 className="sr-only">Projects</h1>
 
         <div
           data-testid="projects-filters"

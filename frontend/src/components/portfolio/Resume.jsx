@@ -26,6 +26,7 @@ export default function Resume() {
           title="Résumé"
           hint={url ? "PDF served via /api/resume" : "loading…"}
         />
+        <h1 className="sr-only">Résumé</h1>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <a

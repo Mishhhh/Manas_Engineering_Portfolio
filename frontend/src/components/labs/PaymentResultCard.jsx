@@ -1,4 +1,5 @@
-import { CheckCircle2, XCircle, Clock } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, RotateCcw } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CFG = {
   Settled: { color: "#22c55e", Icon: CheckCircle2, title: "PAYMENT SUCCESSFUL", banner: "SETTLED" },
@@ -90,6 +91,15 @@ export default function PaymentResultCard({ payment }) {
                 {payment.retry_available ? "Yes" : "No"}
               </span>
             </div>
+            {payment.retry_available && (
+              <Link
+                data-testid="btn-open-retry-engine"
+                to={`/lab/retry-engine?payment=${encodeURIComponent(payment.id)}&request=${encodeURIComponent("REQ-" + payment.id.slice(-6))}`}
+                className="mt-3 inline-flex items-center gap-1.5 border border-[#FFBF00] bg-transparent px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-[#FFBF00] transition-colors duration-150 hover:bg-[#FFBF00]/10"
+              >
+                <RotateCcw size={12} /> Retry Payment
+              </Link>
+            )}
           </div>
         )}
       </div>

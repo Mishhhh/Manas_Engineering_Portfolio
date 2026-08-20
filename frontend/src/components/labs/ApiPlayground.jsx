@@ -36,6 +36,35 @@ const ENDPOINTS = [
       scenario: "Success",
     },
   },
+  {
+    method: "POST",
+    path: "/retry-engine/simulate",
+    tag: "retry-engine",
+    body: {
+      policy: { max_attempts: 4, initial_delay_ms: 5000, backoff_multiplier: 2, max_delay_ms: 60000, strategy: "Exponential" },
+      success_at_attempt: 4,
+      request_id: "REQ-DEMO-1",
+    },
+  },
+  {
+    method: "POST",
+    path: "/arrears/simulate",
+    tag: "arrears",
+    body: {
+      subscription_amount: 12.99,
+      currency: "GBP",
+      attempts: ["Fail", "Fail", "Success"],
+      retry_policy: { max_attempts: 3, initial_delay_ms: 5000, backoff_multiplier: 2, max_delay_ms: 60000, strategy: "Exponential" },
+    },
+  },
+  { method: "GET", path: "/sql-arena/challenges", tag: "sql-arena" },
+  { method: "GET", path: "/sql-arena/schema", tag: "sql-arena" },
+  {
+    method: "POST",
+    path: "/sql-arena/execute",
+    tag: "sql-arena",
+    body: { sql: "SELECT COUNT(*) AS total FROM Payments" },
+  },
 ];
 
 const METHOD_COLOR = {

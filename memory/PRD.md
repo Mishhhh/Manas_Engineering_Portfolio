@@ -65,6 +65,30 @@ Green #00FF41. See `/app/design_guidelines.json`.
 - Tests: `payment_simulator_test.py` (16 cases) + `payment_simulator_extra_test.py` (25 cases) — 60/60 pytest via ingress
 - Testing agent iter 3: backend 60/60, frontend 17/18. Iter 4: 5/5 fixes verified.
 
+### Phase 6-8 — Retry Engine + Arrears Simulator + SQL Arena (Feb 2026)
+**Phase 6 — Retry Engine** `/lab/retry-engine`
+- Backend: `app/application/retry_engine.py` (pure `simulate()` — no real sleeps; exponential/fixed strategies; permanent-failure short-circuit; idempotency key preserved across attempts)
+- Routes: `POST /api/retry-engine/simulate`, `GET /api/retry-engine/preset-policies`
+- Frontend: policy form + attempt schedule timeline + idempotency demo + concepts card
+- Integration: Payment Simulator retry-available failures now show a `btn-open-retry-engine` link
+
+**Phase 7 — Arrears Simulator** `/lab/arrears`
+- Backend: `app/application/arrears_simulator.py` (scripted attempts feed a state machine; escalates to `InArrears` once retries are exhausted; supports partial recovery + missed-cycle counting)
+- Routes: `POST /api/arrears/simulate`
+- Frontend: subscription config + editable scripted attempts + result banner (state, outstanding, arrears, retries, recovered) + timeline
+
+**Phase 8 — SQL Arena** `/lab/sql-arena`
+- Backend: `app/application/sql_arena.py` — aiosqlite in-memory sandbox seeded with 8 customers, 8 subscriptions, 8 mandates, 18 payments, retries, arrears; `PRAGMA query_only=1`. `validate_query()` enforces: single SELECT/WITH statement, no comments (`--` or `/* */`), no destructive keywords (INSERT/UPDATE/DELETE/DROP/ALTER/TRUNCATE/CREATE/EXEC/MERGE/ATTACH/DETACH/PRAGMA/…), 200-row cap
+- `app/application/sql_challenges.py` — 12 curated challenges spanning WHERE, JOIN, DISTINCT, GROUP BY, HAVING, aggregation, window functions, self-join, CASE, month buckets, reconciliation, optimization
+- Routes: `GET /schema`, `GET /challenges`, `GET /challenges/{id}`, `POST /execute`, `POST /challenges/{id}/submit`, `GET /challenges/{id}/hint?index=`, `GET /challenges/{id}/solution`
+- Frontend: 3-panel (schema explorer / editor / challenge detail); Learning + Interview modes; progressive hints (never reveal all at once); solution reveal with explanation; row-set diff evaluator; progress widget with localStorage; difficulty filters
+- Wire-ups: 4 lab cards on `/labs`; palette items `go-retry-engine`, `go-arrears`, `go-sql-arena`; terminal commands `sql` / `retry` / `arrears`
+
+**Test results**
+- Backend pytest: 96/96 (35 phase-2 + 25 phase-5 + 36 phase-6/7/8)
+- Testing agent iter 5: backend 11/11 targeted · frontend 12/13 (SQL starter-query bug)
+- Testing agent iter 6 (retest): **3/3 pass** — starter query fixed + sr-only h1 added to 6 content pages
+
 ## Backlog (in priority order)
 - **P0 · Phase 3** Payment Processing Simulator (mandate → validation → processing → retries → settlement, scenario switcher)
 - **P0 · Phase 4** Retry Engine Lab (exponential backoff + jitter, retry storm demo)

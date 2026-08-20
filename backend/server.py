@@ -53,6 +53,15 @@ def create_app() -> FastAPI:
     from app.api.payment_routes import build_payment_router
     app.include_router(build_payment_router())
 
+    # Feature modules: Retry engine, arrears simulator, SQL arena (Phase 6-8).
+    from app.api.lab_routes import build_retry_router, build_arrears_router, build_sql_arena_router
+    from app.application.sql_arena import SqlArenaService
+
+    sql_arena_service = SqlArenaService()
+    app.include_router(build_retry_router())
+    app.include_router(build_arrears_router())
+    app.include_router(build_sql_arena_router(sql_arena_service))
+
     app.add_middleware(
         CORSMiddleware,
         allow_credentials=True,

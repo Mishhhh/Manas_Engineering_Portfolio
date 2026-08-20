@@ -147,6 +147,19 @@ export default function Terminal() {
         case "status":
           push({ kind: "out", text: "see the STATUS section — polled every 5s from /api/health" });
           break;
+        case "sql":
+        case "sql-arena":
+          push({ kind: "out", text: "opening /lab/sql-arena…" });
+          window.location.href = "/lab/sql-arena";
+          break;
+        case "retry":
+          push({ kind: "out", text: "opening /lab/retry-engine…" });
+          window.location.href = "/lab/retry-engine";
+          break;
+        case "arrears":
+          push({ kind: "out", text: "opening /lab/arrears…" });
+          window.location.href = "/lab/arrears";
+          break;
         default:
           push({ kind: "err", text: `command not found: ${head} — type \`help\`` });
       }

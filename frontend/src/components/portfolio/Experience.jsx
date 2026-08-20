@@ -18,6 +18,7 @@ export default function Experience() {
           title="Experience"
           hint="most-recent first"
         />
+        <h1 className="sr-only">Manas Mishra — Experience</h1>
 
         <ol className="mt-8 border border-zinc-800">
           {(entries || []).map((e, i) => (

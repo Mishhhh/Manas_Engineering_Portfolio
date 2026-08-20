@@ -22,39 +22,33 @@ export default function LabsPage() {
 }
 
 function LabHighlight() {
+  const cards = [
+    { to: "/lab/payment-simulator", tag: "phase-5", title: "Payment Processing Simulator", body: "Backend state machine · 5 scenarios · event history." },
+    { to: "/lab/retry-engine", tag: "phase-6", title: "Payment Retry Engine", body: "Exponential/fixed backoff · idempotency demo · timeline." },
+    { to: "/lab/arrears", tag: "phase-7", title: "Subscription Arrears Simulator", body: "Scripted attempts · arrears escalation · recovery." },
+    { to: "/lab/sql-arena", tag: "phase-8", title: "SQL Arena", body: "Sandboxed SQLite · 12 challenges · learning + interview modes." },
+  ];
   return (
-    <section
-      data-testid="lab-highlight"
-      className="border-b border-zinc-800 bg-[#070707]"
-    >
+    <section data-testid="lab-highlight" className="border-b border-zinc-800 bg-[#070707]">
       <div className="mx-auto max-w-[1440px] px-6 py-10">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Link
-            to="/lab/payment-simulator"
-            data-testid="lab-card-payment-simulator"
-            className="group flex items-start justify-between gap-4 border border-zinc-800 bg-[#0a0a0a] p-5 transition-colors duration-150 hover:border-[#00E5FF]"
-          >
-            <div>
-              <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[#00E5FF]">
-                <Zap size={11} /> new · phase-5
+          {cards.map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              data-testid={`lab-card-${c.to.split("/").pop()}`}
+              className="group flex items-start justify-between gap-4 border border-zinc-800 bg-[#0a0a0a] p-5 transition-colors duration-150 hover:border-[#00E5FF]"
+            >
+              <div>
+                <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.22em] text-[#00E5FF]">
+                  <Zap size={11} /> new · {c.tag}
+                </div>
+                <h3 className="mt-2 text-lg font-semibold tracking-tight text-white">{c.title}</h3>
+                <p className="mt-1 text-sm text-zinc-400">{c.body}</p>
               </div>
-              <h3 className="mt-2 text-lg font-semibold tracking-tight text-white">
-                Payment Processing Simulator
-              </h3>
-              <p className="mt-1 text-sm text-zinc-400">
-                Backend-owned state machine for validation → mandate check →
-                processing → settlement with 5 scenarios and full event history.
-              </p>
-            </div>
-            <ArrowRight
-              size={16}
-              className="mt-1 shrink-0 text-zinc-500 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-white"
-            />
-          </Link>
-
-          <div className="flex items-center border border-dashed border-zinc-800 bg-transparent p-5 font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
-            more labs incoming · sql arena · ask manas · incident simulator
-          </div>
+              <ArrowRight size={16} className="mt-1 shrink-0 text-zinc-500 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-white" />
+            </Link>
+          ))}
         </div>
       </div>
     </section>

@@ -13,6 +13,7 @@ export default function Skills() {
     >
       <div className="mx-auto max-w-[1440px] px-6 py-14 lg:py-20">
         <SectionHeader eyebrow="0x04 · skills" title="Skills Matrix" hint="grouped by category" />
+        <h1 className="sr-only">Skills</h1>
 
         <div className="mt-8 grid grid-cols-1 gap-px border border-zinc-800 bg-zinc-800 md:grid-cols-2 lg:grid-cols-3">
           {(groups || []).map((g) => (

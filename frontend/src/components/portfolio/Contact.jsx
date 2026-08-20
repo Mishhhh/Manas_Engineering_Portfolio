@@ -41,6 +41,7 @@ export default function Contact() {
           title="Get in touch"
           hint="messages POST to /api/contact"
         />
+        <h1 className="sr-only">Contact</h1>
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
           <aside

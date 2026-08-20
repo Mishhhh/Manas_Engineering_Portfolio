@@ -9,6 +9,9 @@ import ResumePage from "@/pages/ResumePage";
 import ContactPage from "@/pages/ContactPage";
 import LabsPage from "@/pages/LabsPage";
 import PaymentSimulatorPage from "@/pages/PaymentSimulatorPage";
+import RetryEnginePage from "@/pages/RetryEnginePage";
+import ArrearsPage from "@/pages/ArrearsPage";
+import SqlArenaPage from "@/pages/SqlArenaPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/labs" element={<LabsPage />} />
           <Route path="/lab/payment-simulator" element={<PaymentSimulatorPage />} />
+          <Route path="/lab/retry-engine" element={<RetryEnginePage />} />
+          <Route path="/lab/arrears" element={<ArrearsPage />} />
+          <Route path="/lab/sql-arena" element={<SqlArenaPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
