@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { api, endpoints } from "@/lib/api";
-import { SectionHeader } from "@/components/portfolio/SystemStatus";
+import SectionHeader from "@/components/portfolio/SectionHeader";
 
 const BANNER = [
   "manas-os shell v0.1.0 · type `help` to list commands",
@@ -28,6 +28,19 @@ export default function Terminal() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [lines]);
+
+  // Allow external components (e.g. CommandPalette) to inject a command.
+  useEffect(() => {
+    const h = (e) => {
+      const cmd = e.detail;
+      if (typeof cmd === "string" && cmd.length) {
+        runCommand(cmd);
+      }
+    };
+    window.addEventListener("terminal:run", h);
+    return () => window.removeEventListener("terminal:run", h);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const focusInput = () => inputRef.current?.focus();
 

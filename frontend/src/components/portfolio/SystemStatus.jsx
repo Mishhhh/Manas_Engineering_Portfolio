@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, endpoints } from "@/lib/api";
+import SectionHeader from "@/components/portfolio/SectionHeader";
 
 const STATUS_COLOR = {
   OPERATIONAL: "#22c55e",
@@ -8,9 +9,6 @@ const STATUS_COLOR = {
   REQUIRED: "#FFBF00",
 };
 
-/**
- * SystemStatus — live from /api/health. Shows the "engineer OS" pulse.
- */
 export default function SystemStatus() {
   const [health, setHealth] = useState(null);
   const [err, setErr] = useState(null);
@@ -112,7 +110,7 @@ function StatusCell({ indicator, last }) {
   );
 }
 
-export function SectionHeader({ eyebrow, title, hint }) {
+export function SectionHeaderInline({ eyebrow, title, hint }) {
   return (
     <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
       <div>

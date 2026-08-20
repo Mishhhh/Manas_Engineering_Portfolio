@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, FileText } from "lucide-react";
 import { api, endpoints } from "@/lib/api";
+import { Link } from "react-router-dom";
 
 /**
  * Hero — dark-first, dense, left-aligned. No purple gradients.
@@ -77,9 +78,9 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <a
+            <Link
               data-testid="cta-explore"
-              href="#terminal"
+              to="/labs"
               className="group inline-flex items-center gap-2 border border-white bg-white px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.22em] text-black transition-colors duration-150 hover:bg-zinc-200 active:scale-[0.98]"
             >
               Explore Engineering
@@ -87,17 +88,15 @@ export default function Hero() {
                 size={14}
                 className="transition-transform duration-150 group-hover:translate-x-0.5"
               />
-            </a>
-            <a
+            </Link>
+            <Link
               data-testid="cta-resume"
-              href={resumeUrl || "#"}
-              target="_blank"
-              rel="noreferrer"
+              to="/resume"
               className="inline-flex items-center gap-2 border border-zinc-700 bg-transparent px-4 py-2.5 font-mono text-[12px] uppercase tracking-[0.22em] text-zinc-200 transition-colors duration-150 hover:border-[#007AFF] hover:text-white active:scale-[0.98]"
             >
               <FileText size={14} />
               View Résumé
-            </a>
+            </Link>
           </div>
         </div>
 

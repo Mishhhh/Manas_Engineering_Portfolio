@@ -14,5 +14,7 @@ export const endpoints = {
   experience: "/experience",
   skills: "/skills",
   projects: "/projects",
+  project: (id) => `/projects/${id}`,
   resume: "/resume",
+  contact: "/contact",
 };

@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only retest of Portfolio-OS Phase 2 (iteration_1 fixes). Both reported UI bugs are FIXED: (1) mobile nav drawer now exists and works at 390x844 — mobile-menu-toggle visible/clickable, mobile-drawer opens, all 8 mobile-nav-* links render, clicking mobile-nav-projects navigates to /projects and drawer auto-closes on route change; (2) no horizontal overflow at 390px on /, /projects, /labs (scrollWidth == clientWidth == 390) and projects-filters wraps inside viewport (box x=24, width=342). Desktop/tablet: nav-projects visible and mobile-menu-toggle correctly hidden at both 768px and 1920px. Regressions all green: Cmd+K palette opens, palette-input filters (2 results for 'proj'), Escape closes; contact form submits successfully (contact-success 'sent · id ...'); API playground GET /projects returns api-status-code 200. Backend pytest intentionally not re-run per request.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/contact", "issue": "422 validation detail from Pydantic EmailStr is surfaced verbatim to the UI ('value is not a valid email address: The part after the @-sign is a special-use or reserved name...'). Functional and visible, but raw/technical copy for end users. Cosmetic only."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py"],
+  "action_items": [
+    "Optional polish: map backend 422 email validation message to a friendly string (e.g. 'Please enter a valid email address') instead of echoing Pydantic detail."
+  ],
+  "critical_code_review_comments": [
+    "TopBar.jsx mobile drawer implementation is correct: useEffect on pathname closes drawer, md:hidden on toggle and drawer keeps desktop clean, aria-expanded/aria-controls present."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not re-run (frontend-only pass)", "frontend": "100%"},
+  "seed_data_creation": "2 TEST_ contact messages created via UI submissions; both deleted from portfolio_contact_messages after testing.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "iteration_1 mobile-nav and filter-overflow bugs are verified fixed at 390x844. Note: use a real TLD for contact-form email in tests — '.test'/'.invalid' domains are rejected by Pydantic EmailStr (a 422 with those is expected behaviour, not a bug). Backend suite at /app/backend/tests/backend_test.py was 19/19 in iteration_1 and backend code unchanged.",
+  "rca_of_the_issue": "Initial contact-form failure in this pass was a test-data defect on my side (qa.bot@example.test — reserved TLD rejected by email-validator), not an app bug; re-run with example.com succeeded and the error path also renders correctly."
+}

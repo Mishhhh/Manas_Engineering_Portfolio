@@ -1,0 +1,37 @@
+{
+  "summary": "Phase 2 full-stack testing of Manas Mishra Portfolio-OS via external REACT_APP_BACKEND_URL. Backend: 19 pytest cases across health/resume/profile/experience/skills/projects/contact/admin-seed — all passing (incl. Mongo persistence check on portfolio_contact_messages and 422/404/401 negative cases). Frontend: all 8 routes + 404 render with expected testids; hero, 5 live status cells, top-bar nav, Cmd/Ctrl+K palette (filter → Enter nav → Escape), projects filters (3/2/0/3), project detail overlay + arch node selection, experience (3 items, Xplore first), 5 skill groups, resume links/object PDF, contact submit success (id returned) + native email validation, Labs terminal (help/quick-cmd/ctrl+L/unknown cmd), Architecture Explorer (project switch), API Playground (GET /projects 200 with safesend-sdk, POST /contact 201). No CORS errors and no console errors observed. Two issues found: mobile horizontal overflow from projects-filters, and no mobile navigation affordance.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Projects.jsx (filter bar)", "issue": "projects-filters is a non-wrapping inline-flex (412px wide) causing document scrollWidth 436 > clientWidth 390 at 390x844 on both / (featured projects) and /projects — horizontal page overflow. Fix with flex-wrap or overflow-x-auto on the filter row.", "selector": "[data-testid=\"projects-filters\"]", "priority": "MEDIUM"},
+      {"component": "TopBar.jsx", "issue": "On mobile (390px) all nav links (nav-*) AND open-palette are hidden with no hamburger/menu replacement — only brand-link is reachable, so /about, /experience, /projects, /skills, /resume, /contact, /labs are unreachable by mobile users.", "selector": "[data-testid=\"nav-projects\"], [data-testid=\"open-palette\"]", "priority": "HIGH"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Footer (all pages)", "issues": ["Right-side footer text 'THIS SITE IS THE PROJECT · NOT A TEMPLATE' renders in very dark zinc on #050505 — low contrast, borderline unreadable"]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Make projects-filters wrap or scroll horizontally to remove page-level horizontal overflow at 390px (home + /projects).",
+    "Add a mobile navigation affordance (hamburger drawer or keep open-palette visible) in TopBar; currently no route is reachable on mobile.",
+    "Optional: raise footer secondary text contrast (use zinc-500+)."
+  ],
+  "critical_code_review_comments": [
+    "ProjectDetail.jsx node-info panel was missing data-testid=\"arch-node-info\" (present in labs ArchitectureExplorer) — added by testing agent for parity/testability.",
+    "server.py uses deprecated @app.on_event startup/shutdown (FastAPI lifespan is the supported API); consider migrating to lifespan handlers.",
+    "Skills API field is 'category' while review request described it as 'label' — keep DTO naming documented/consistent to avoid contract drift.",
+    "/api/admin/seed compares the raw query token to settings.admin_password with a plain != (no constant-time compare, token in URL/logs). Acceptable pre-Phase-9 but should move to header/JWT auth."
+  ],
+  "updated_files": ["/app/frontend/src/components/portfolio/ProjectDetail.jsx", "/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100% (19/19)", "frontend": "~95% (all functional flows pass; 2 responsive/nav issues)"},
+  "seed_data_creation": "Created TEST_QA contact messages via API and UI (API-created ones deleted in test cleanup; 2 UI/playground-created docs remain in portfolio_contact_messages).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Admin seed token TestPass (backend/.env ADMIN_PASSWORD) — verified 401 without/with wrong token, 200 with correct token. No login UI yet.",
+  "context_for_next_testing_agent": "Regression suite at /app/backend/tests/backend_test.py (run: cd /app/backend && python -m pytest tests/backend_test.py -v). Skills group field is 'category' not 'label'; Playwright inner_text returns uppercased text due to CSS text-transform on skill group headers. Arch node ids for safesend-sdk: client/sdk/cqrs/saga/http/api. resume-viewer testid is on the wrapper div; the PDF <object data> is a child. Remaining open items: mobile overflow of projects-filters and missing mobile nav.",
+  "rca_of_the_issue": "Mobile overflow RCA: [data-testid=projects-filters] uses 'inline-flex' with 4 fixed-padding buttons totalling 412px and no wrap/scroll, so it exceeds the 390px viewport and expands document scrollWidth to 436px on / and /projects. Mobile nav RCA: TopBar hides nav list and open-palette behind md: breakpoint utilities without any small-screen alternative."
+}
